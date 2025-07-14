@@ -1,6 +1,8 @@
-﻿namespace MellonBank.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace MellonBank.Models
 {
-    public class UserRole
+    public class UserRole : IdentityRole
     {
         public int Id { get; set; }
 

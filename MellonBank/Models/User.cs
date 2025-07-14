@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MellonBank.Models
 {
-    public class User
+    public class User : IdentityUser
     {
         public int Id { get; set; }
 
