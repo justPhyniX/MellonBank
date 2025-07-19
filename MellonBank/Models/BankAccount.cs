@@ -5,21 +5,20 @@ namespace MellonBank.Models
 {
     public class BankAccount
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(9)]
         public string UserAFM { get; set; }
 
-        public int UserId { get; set; }
-
+        [Required]
         public User User { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
         public decimal BalanceEuro { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public string AccountNumber { get; set; }
 
         [Required]

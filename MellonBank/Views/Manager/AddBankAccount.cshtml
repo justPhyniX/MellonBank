@@ -1,0 +1,68 @@
+﻿@using MellonBank.Models.ViewModels
+@model BankAccountViewModel
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" asp-action="AddBankAccount" method="post">
+            <h2>Create a new user bank account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <!--User AFM-->
+            <div class="form-floating mb-3">
+                <input asp-for="UserAFM" class="form-control" autocomplete="off" aria-required="true" placeholder="123456789" />
+                <label asp-for="UserAFM">User AFM</label>
+                <span asp-validation-for="UserAFM" class="text-danger"></span>
+            </div>
+
+            <!--Balance in EUR-->
+            <div class="form-floating mb-3">
+                <input asp-for="BalanceEuro" type="number" class="form-control" autocomplete="off" aria-required="true" placeholder="1000.00" />
+                <label asp-for="BalanceEuro">Account Balance (EUR)</label>
+                <span asp-validation-for="BalanceEuro" class="text-danger"></span>
+            </div>
+            <!--Account Number-->
+            <div class="form-floating mb-3">
+                <input asp-for="AccountNumber" class="form-control" autocomplete="off" aria-required="true" placeholder="GR0012345678" />
+                <label asp-for="AccountNumber">Account Number</label>
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+            <!--Branch-->
+            <div class="form-floating mb-3">
+                <input asp-for="Branch" class="form-control" autocomplete="off" aria-required="true" placeholder="Athens" />
+                <label asp-for="Branch">Branch</label>
+                <span asp-validation-for="Branch" class="text-danger"></span>
+            </div>
+            <!--Account Type-->
+            <div class="form-floating mb-3">
+                <select asp-for="AccountType" class="form-select" aria-required="true">
+                    <option value="">-- Select an Account Type --</option>
+                    <option value="Current">Current Account</option>
+                    <option value="Savings">Savings Account</option>
+                    <option value="FixedDeposit">Fixed Deposit</option>
+                    <option value="Loan">Loan Account</option>
+                    <option value="ForeignCurrency">Foreign Currency Account</option>
+                    <option value="Salary">Salary Account</option>
+                    <option value="Student">Student Account</option>
+                    <option value="Business">Business Account</option>
+                </select>
+                <label asp-for="AccountType">Account Type</label>
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>

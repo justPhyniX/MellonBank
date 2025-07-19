@@ -4,5 +4,19 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <ul class="list-unstyled">
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="mb-3">
+                <a href="Admin/AddManager" class="w-25 btn btn-lg btn-primary">Create Manager</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">List Managers</a>
+            </li>
+        }
+        <li class="mb-3">
+            <a href="" class="w-25 btn btn-lg btn-primary">Currency Converter</a>
+        </li>
+    </ul>
 </div>
