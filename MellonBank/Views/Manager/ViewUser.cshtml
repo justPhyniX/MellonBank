@@ -1,30 +1,46 @@
 ﻿@model MellonBank.Models.User
 
+<h2>Search User</h2>
+<form id="registerForm" asp-action="ViewUser" method="get">
+    <div class="form-floating mb-3">
+        <input asp-for="AFM" class="form-control" autocomplete="off" aria-required="true" placeholder="123456789" />
+        <label asp-for="AFM">AFM</label>
+    </div>
+    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Search</button>
+</form>
 
-<h2>Manager Details</h2>
-<table class="table">
-    <tr>
-        <th>First Name</th>
-        <td>@Model.FirstName</td>
-    </tr>
-    <tr>
-        <th>Last Name</th>
-        <td>@Model.LastName</td>
-    </tr>
-    <tr>
-        <th>Address</th>
-        <td>@Model.Address</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
-    <tr>
-        <th>AFM</th>
-        <td>@Model.AFM</td>
-    </tr>
-    <tr>
-        <th>Username</th>
-        <td>@Model.UserName</td>
-    </tr>
-</table>
+@if (Model != null)
+{
+    <table class="table">
+        <tr>
+            <th>First Name</th>
+            <td>@Model.FirstName</td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td>@Model.LastName</td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>@Model.Address</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>AFM</th>
+            <td>@Model.AFM</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>@Model.UserName</td>
+        </tr>
+    </table>
+}
+else if (ViewBag.NotFoundAFM != null)
+{
+    <div class="alert alert-warning mt-3">
+        No user found with AFM: <strong>@ViewBag.NotFoundAFM</strong>
+    </div>
+}

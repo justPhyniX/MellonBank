@@ -11,9 +11,9 @@ namespace MellonBank.Models
 
         public User User { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal BalanceEuro { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
         public string AccountNumber { get; set; }
 
         public string Branch { get; set; }

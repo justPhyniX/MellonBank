@@ -15,13 +15,13 @@ namespace MellonBank.Controllers
             _adminRepository = adminRepository;
         }
 
-        [HttpGet]       //Returns the view for adding a manager
+        [HttpGet]
         public async Task<ActionResult> AddManager()
         {
             return View();
         }
 
-        [HttpPost]      //Handles form submission for adding a manager  
+        [HttpPost]
         public async Task<ActionResult> AddManager(UserViewModel manager)
         {
             if (!ModelState.IsValid)

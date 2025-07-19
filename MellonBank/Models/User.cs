@@ -4,6 +4,10 @@ namespace MellonBank.Models
 {
     public class User : IdentityUser
     {
+        public User()
+        {
+            BankAccounts = new List<BankAccount>();
+        }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Address { get; set; } = null!;

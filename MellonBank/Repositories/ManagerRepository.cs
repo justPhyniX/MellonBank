@@ -2,15 +2,26 @@
 using MellonBank.Mapper;
 using MellonBank.Models;
 using MellonBank.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MellonBank.Repositories
 {
     public class ManagerRepository : IManagerRepository
     {
         private readonly ApplicationDbContext _db;
-        public ManagerRepository(ApplicationDbContext db)
+        private readonly UserManager<User> _userManager;
+        public ManagerRepository(ApplicationDbContext db, UserManager<User> userManager)
         {
             _db = db;
+            _userManager = userManager;
+        }
+
+        public async Task AddUser(UserViewModel user)
+        {
+            var newUser = UserMapper.MapUserViewModelToUser(user);
+            await _userManager.CreateAsync(newUser, user.Password);
+            await _userManager.AddToRoleAsync(newUser, "Manager");
         }
 
         public async Task AddBankAccount(BankAccountViewModel bankAccount)
@@ -20,19 +31,23 @@ namespace MellonBank.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public Task AddUser(UserViewModel user)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> DeleteBankAccount(string accountNumber)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteUser(string AFM)
+        public async Task<bool> DeleteUser(string AFM)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.AFM == AFM);
+            if (user == null)
+                return false;
+
+            var accounts = _db.BankAccounts.Where(x => x.UserAFM == AFM);
+            _db.BankAccounts.RemoveRange(accounts);
+
+            await _userManager.DeleteAsync(user);
+            await _db.SaveChangesAsync();
+            return true;
         }
 
         public Task<bool> EditBankAccount(string accountNumber)
@@ -45,14 +60,14 @@ namespace MellonBank.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> ListUsers()
+        public async Task<List<User>> ListUsers()
         {
-            throw new NotImplementedException();
+            return await _db.Users.ToListAsync();
         }
 
-        public Task<User> ViewUser(string AFM)
+        public async Task<User> ViewUser(string AFM)
         {
-            throw new NotImplementedException();
+            return await _db.Users.FirstOrDefaultAsync(x => x.AFM == AFM);
         }
     }
 }

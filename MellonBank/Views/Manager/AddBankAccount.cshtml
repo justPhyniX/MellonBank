@@ -29,7 +29,7 @@
 
             <!--Balance in EUR-->
             <div class="form-floating mb-3">
-                <input asp-for="BalanceEuro" type="number" class="form-control" autocomplete="off" aria-required="true" placeholder="1000.00" />
+                <input asp-for="BalanceEuro" type="number" class="form-control" autocomplete="off" aria-required="true" placeholder="1000.00" step="0.01" min="0"/>
                 <label asp-for="BalanceEuro">Account Balance (EUR)</label>
                 <span asp-validation-for="BalanceEuro" class="text-danger"></span>
             </div>
@@ -48,7 +48,7 @@
             <!--Account Type-->
             <div class="form-floating mb-3">
                 <select asp-for="AccountType" class="form-select" aria-required="true">
-                    <option value="">-- Select an Account Type --</option>
+                    <option value="" disabled selected>Select an Account Type</option>
                     <option value="Current">Current Account</option>
                     <option value="Savings">Savings Account</option>
                     <option value="FixedDeposit">Fixed Deposit</option>

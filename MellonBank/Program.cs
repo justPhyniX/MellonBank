@@ -84,6 +84,7 @@ namespace MellonBank
                     admin.FirstName = "Admin";
                     admin.LastName = "Admin";
                     admin.AFM = "000000001";
+                    admin.Address = "adminAddress123";
 
                     await userManager.CreateAsync(admin, password);
                     await userManager.AddToRoleAsync(admin, "Admin");

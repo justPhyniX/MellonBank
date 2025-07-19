@@ -15,6 +15,35 @@
                 <a href="" class="w-25 btn btn-lg btn-primary">List Managers</a>
             </li>
         }
+
+        @if (User.IsInRole("Manager"))
+        {
+            <li class="mb-3">
+                <a href="Manager/AddUser" class="w-25 btn btn-lg btn-primary">Create User</a>
+            </li>
+            <li class="mb-3">
+                <a href="Manager/AddBankAccount" class="w-25 btn btn-lg btn-primary">Create Bank Account</a>
+            </li>
+            <li class="mb-3">
+                <a href="Manager/EditUser" class="w-25 btn btn-lg btn-primary">Edit User</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Edit Bank Account</a>
+            </li>
+            <li class="mb-3">
+                <a href="Manager/ViewUser" class="w-25 btn btn-lg btn-primary">Search User</a>
+            </li>
+            <li class="mb-3">
+                <a href="Manager/ListUsers" class="w-25 btn btn-lg btn-primary">List Users</a>
+            </li>
+            <li class="mb-3">
+                <a href="Manager/DeleteUser" class="w-25 btn btn-lg btn-danger">Delete User</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-danger">Delete Bank Account</a>
+            </li>
+        }
+
         <li class="mb-3">
             <a href="" class="w-25 btn btn-lg btn-primary">Currency Converter</a>
         </li>
