@@ -16,7 +16,7 @@ namespace MellonBank.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> AddManager()
+        public IActionResult AddManager()
         {
             return View();
         }

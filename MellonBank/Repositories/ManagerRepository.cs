@@ -55,9 +55,27 @@ namespace MellonBank.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditUser(string AFM)
+        public async Task<bool> EditUser(UserViewModel newUser, string searchAFM)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.AFM == searchAFM);
+            if(user == null)
+                return false;
+            else
+            {
+                user.FirstName = newUser.FirstName;
+                user.LastName = newUser.LastName;
+                user.Address = newUser.Address;
+                user.AFM = newUser.AFM;
+                user.UserName = newUser.UserName;
+                user.NormalizedUserName = newUser.UserName.ToUpper();
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, newUser.Password);
+                string emailToken = await _userManager.GenerateChangeEmailTokenAsync(user, newUser.Email);
+                await _userManager.ChangeEmailAsync(user, newUser.Email, emailToken);
+                await _userManager.ChangePhoneNumberAsync(user, newUser.PhoneNumber, newUser.Email);
+
+                return true;
+            }
         }
 
         public async Task<List<User>> ListUsers()

@@ -1,4 +1,5 @@
-﻿using MellonBank.Models.ViewModels;
+﻿using MellonBank.Models;
+using MellonBank.Models.ViewModels;
 using MellonBank.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace MellonBank.Controllers
 
         //ADD BANK ACCOUNT
         [HttpGet]
-        public async Task<ActionResult> AddBankAccount()
+        public IActionResult AddBankAccount()
         {
             return View();
         }
@@ -33,7 +34,7 @@ namespace MellonBank.Controllers
 
         //ADD USER
         [HttpGet]
-        public async Task<ActionResult> AddUser()
+        public IActionResult AddUser()
         {
             return View();
         }
@@ -55,7 +56,7 @@ namespace MellonBank.Controllers
             if (user == null)
             {
                 ViewBag.NotFoundAFM = AFM;
-                return View(null);
+                return View();
             }
             return View(user);
         }
@@ -70,7 +71,7 @@ namespace MellonBank.Controllers
 
         //DELETE USER
         [HttpGet]
-        public async Task<ActionResult> DeleteUser()
+        public IActionResult DeleteUser()
         {
             if (TempData["NotFoundAFM"] != null)
             {
@@ -99,18 +100,28 @@ namespace MellonBank.Controllers
 
         //EDIT USER
         [HttpGet]
-        public async Task<ActionResult> EditUser()
+        public IActionResult EditUser()
         {
+            if (TempData["NotFoundAFM"] != null)
+                ViewBag.NotFoundAFM = TempData["NotFoundAFM"];
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> EditUser(string AFM)
-        //{
-        //    if (AFM == null)
-        //        return RedirectToAction("EditUser");
+        [HttpPost]
+        public async Task<ActionResult> EditUser(UserViewModel userToEdit, string searchAFM)
+        {
+            if (searchAFM == null)
+                return View();
 
-
-        //}
+            if (ModelState.IsValid && await _managerRepository.EditUser(userToEdit, searchAFM))
+            {
+                return RedirectToAction("ViewUser", new { afm = userToEdit.AFM });
+            }
+            else
+            {
+                TempData["NotFoundAFM"] = searchAFM;
+                return RedirectToAction("EditUser");
+            }
+        }
     }
 }
