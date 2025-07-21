@@ -1,0 +1,76 @@
+﻿@model MellonBank.Models.ViewModels.BankAccountViewModel
+
+@{
+    ViewData["Title"] = "EditBankAccount";
+}
+
+
+        
+        
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h1>Edit Bank Account</h1>
+        <form asp-action="EditBankAccount" method="post">
+            <div class="form-group">
+                <label for="searchAccountNumber" class="control-label">Account Number To Edit</label>
+                <input name="searchAccountNumber" class="form-control" />
+            </div>
+            <hr />
+            <div class="form-group">
+                <input asp-for="UserAFM" type="hidden" value="000000001" class="form-control" />
+                <span asp-validation-for="UserAFM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BalanceEuro" class="control-label">Account Balance (EUR)</label>
+                <input asp-for="BalanceEuro" autocomplete="off" class="form-control" />
+                <span asp-validation-for="BalanceEuro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountNumber" class="control-label">New Account Number</label>
+                <input asp-for="AccountNumber" autocomplete="off" class="form-control" />
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Branch" class="control-label">Branch</label>
+                <input asp-for="Branch" autocomplete="off" class="form-control" />
+                <span asp-validation-for="Branch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountType">Account Type</label>
+                <select asp-for="AccountType" class="form-select" aria-required="true">
+                    <option value="" disabled selected>Select an Account Type</option>
+                    <option value="Current">Current Account</option>
+                    <option value="Savings">Savings Account</option>
+                    <option value="FixedDeposit">Fixed Deposit</option>
+                    <option value="Loan">Loan Account</option>
+                    <option value="ForeignCurrency">Foreign Currency Account</option>
+                    <option value="Salary">Salary Account</option>
+                    <option value="Student">Student Account</option>
+                    <option value="Business">Business Account</option>
+                </select>
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary my-2" />
+            </div>
+        </form>
+
+        @if (ViewBag.NotFoundAccountNumber != null)
+        {
+            <div class="alert alert-warning mt-3">@ViewBag.NotFoundAccountNumber</div>
+        }
+
+        @if (ViewBag.SuccessfulEdit != null)
+        {
+            <div class="alert alert-success mt-3">@ViewBag.SuccessfulEdit</div>
+        }
+    </div>
+</div>
+
+        
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

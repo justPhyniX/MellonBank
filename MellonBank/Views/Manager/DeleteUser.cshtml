@@ -1,17 +1,19 @@
 ﻿@model MellonBank.Models.User
 
-<h2>Delete User</h2>
-<form id="registerForm" asp-action="DeleteUser" method="post">
-    <div class="form-floating mb-3">
-        <input asp-for="AFM" class="form-control" autocomplete="off" aria-required="true" placeholder="123456789" />
-        <label asp-for="AFM">AFM</label>
-    </div>
-    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-danger">Delete</button>
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h2>Delete User</h2>
+        <form id="registerForm" asp-action="DeleteUser" method="post">
+            <div class="form-floating mb-3">
+                <input asp-for="AFM" class="form-control" autocomplete="off" aria-required="true" placeholder="123456789" />
+                <label asp-for="AFM">AFM</label>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-danger">Delete</button>
+        </form>
 
-@if (ViewBag.NotFoundAFM != null)
-{
-    <div class="alert alert-warning mt-3">
-        No user found to delete with AFM: <strong>@ViewBag.NotFoundAFM</strong>
+        @if (ViewBag.NotFoundAFM != null)
+        {
+            <div class="alert alert-warning mt-3">@ViewBag.NotFoundAFM</div>
+        }
     </div>
-}
+</div>

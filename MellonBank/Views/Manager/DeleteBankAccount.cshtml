@@ -1,0 +1,28 @@
+﻿@model MellonBank.Models.BankAccount
+
+@{
+    ViewData["Title"] = "DeleteBankAccount";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h2>Delete Bank Account</h2>
+        <form id="registerForm" asp-action="DeleteBankAccount" method="post">
+            <div class="form-floating mb-3">
+                <input asp-for="AccountNumber" class="form-control" autocomplete="off" aria-required="true" placeholder="GR0012345678" />
+                <label asp-for="AccountNumber">Account Number</label>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-danger">Delete</button>
+        </form>
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success mt-3">@ViewBag.SuccessMessage</div>
+        }
+
+        @if (ViewBag.NotFoundAccountNumber != null)
+        {
+            <div class="alert alert-warning mt-3">@ViewBag.NotFoundAccountNumber</div>
+        }
+    </div>
+</div>

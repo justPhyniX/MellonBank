@@ -22,7 +22,7 @@ namespace MellonBank.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddManager(UserViewModel manager)
+        public async Task<IActionResult> AddManager(UserViewModel manager)
         {
             if (!ModelState.IsValid)
                 return View(manager);
@@ -31,7 +31,7 @@ namespace MellonBank.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ViewManager(string userName)
+        public async Task<IActionResult> ViewManager(string userName)
         {
             var user = await _adminRepository.GetManagerByUserNameAsync(userName);
             if (user == null)

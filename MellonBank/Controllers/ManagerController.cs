@@ -15,23 +15,6 @@ namespace MellonBank.Controllers
             _managerRepository = managerRepository;
         }
 
-        //ADD BANK ACCOUNT
-        [HttpGet]
-        public IActionResult AddBankAccount()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> AddBankAccount(BankAccountViewModel bankAccount)
-        {
-            if (!ModelState.IsValid)
-                return View(bankAccount);
-            await _managerRepository.AddBankAccount(bankAccount);
-            ModelState.Clear();
-            return View(new BankAccountViewModel());
-        }
-
         //ADD USER
         [HttpGet]
         public IActionResult AddUser()
@@ -40,7 +23,7 @@ namespace MellonBank.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddUser(UserViewModel user)
+        public async Task<IActionResult> AddUser(UserViewModel user)
         {
             if(!ModelState.IsValid)
                 return View(user);
@@ -48,9 +31,38 @@ namespace MellonBank.Controllers
             return RedirectToAction("ViewUser", new { afm = user.AFM });
         }
 
+        //ADD BANK ACCOUNT
+        [HttpGet]
+        public IActionResult AddBankAccount()
+        {
+            if (TempData["NotFoundAFM"] != null)
+                ViewBag.NotFoundAFM = TempData["NotFoundAFM"];
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBankAccount(BankAccountViewModel bankAccount)
+        {
+            if (!ModelState.IsValid)
+                return View(bankAccount);
+
+            var result = await _managerRepository.AddBankAccount(bankAccount);
+            if (result)
+            {
+                ModelState.Clear();
+                ViewBag.SuccessMessage = "Bank account created successfully!";
+                return View(new BankAccountViewModel());
+            }
+            else
+            {
+                TempData["NotFoundAFM"] = bankAccount.UserAFM;
+                return RedirectToAction("AddBankAccount");
+            }
+        }
+
         //VIEW USER
         [HttpGet]
-        public async Task<ActionResult> ViewUser(string AFM)
+        public async Task<IActionResult> ViewUser(string AFM)
         {
             var user = await _managerRepository.ViewUser(AFM);
             if (user == null)
@@ -63,38 +75,58 @@ namespace MellonBank.Controllers
 
         //LIST USERS
         [HttpGet]
-        public async Task<ActionResult> ListUsers()
+        public async Task<IActionResult> ListUsers()
         {
             var users = await _managerRepository.ListUsers();
             return View(users);
+        }
+
+        //DELETE BANK ACCOUNT
+        [HttpGet]
+        public IActionResult DeleteBankAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteBankAccount(string accountNumber)
+        {
+            if(accountNumber == null)
+                return RedirectToAction("DeleteBankAccount");
+
+            var result = await _managerRepository.DeleteBankAccount(accountNumber);
+            if (result)
+            {
+                ViewBag.SuccessMessage = "Bank account deleted successfully!";
+                return View();
+            }
+            else
+            {
+                ViewBag.NotFoundAccountNumber = $"No bank account found to delete with account number: {accountNumber}";
+                return View();
+            }
         }
 
         //DELETE USER
         [HttpGet]
         public IActionResult DeleteUser()
         {
-            if (TempData["NotFoundAFM"] != null)
-            {
-                ViewBag.NotFoundAFM = TempData["NotFoundAFM"];
-            }
             return View();
         }
         
         [HttpPost]
-        public async Task<ActionResult> DeleteUser(string AFM)
+        public async Task<IActionResult> DeleteUser(string AFM)
         {
             if (AFM == null)
                 return RedirectToAction("DeleteUser");
 
             var result = await _managerRepository.DeleteUser(AFM);
             if(result)
-            {
                 return RedirectToAction("ListUsers");
-            }
             else
             {
-                TempData["NotFoundAFM"] = AFM;
-                return RedirectToAction("DeleteUser");
+                ViewBag.NotFoundAFM = $"No user found to delete with AFM: {AFM}";
+                return View();
             }
         }
 
@@ -108,19 +140,42 @@ namespace MellonBank.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditUser(UserViewModel userToEdit, string searchAFM)
+        public async Task<IActionResult> EditUser(UserViewModel userToEdit, string searchAFM)
         {
             if (searchAFM == null)
                 return View();
 
             if (ModelState.IsValid && await _managerRepository.EditUser(userToEdit, searchAFM))
-            {
                 return RedirectToAction("ViewUser", new { afm = userToEdit.AFM });
-            }
             else
             {
                 TempData["NotFoundAFM"] = searchAFM;
                 return RedirectToAction("EditUser");
+            }
+        }
+
+        //EDIT BANK ACCOUNT
+        [HttpGet]
+        public IActionResult EditBankAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditBankAccount(BankAccountViewModel bankAccountToEdit, string searchAccountNumber)
+        {
+            if(searchAccountNumber == null)
+                return View();
+
+            if (ModelState.IsValid && await _managerRepository.EditBankAccount(bankAccountToEdit, searchAccountNumber))
+            {
+                ViewBag.SuccessfulEdit = $"Successfully edited bank account with number: {searchAccountNumber}";
+                return View();
+            }
+            else
+            {
+                ViewBag.NotFoundAccountNumber = $"No bank account found to edit with number: {searchAccountNumber}";
+                return View();
             }
         }
     }

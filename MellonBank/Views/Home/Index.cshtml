@@ -28,7 +28,7 @@
                 <a href="Manager/EditUser" class="w-25 btn btn-lg btn-primary">Edit User</a>
             </li>
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-primary">Edit Bank Account</a>
+                <a href="Manager/EditBankAccount" class="w-25 btn btn-lg btn-primary">Edit Bank Account</a>
             </li>
             <li class="mb-3">
                 <a href="Manager/ViewUser" class="w-25 btn btn-lg btn-primary">Search User</a>
@@ -40,7 +40,17 @@
                 <a href="Manager/DeleteUser" class="w-25 btn btn-lg btn-danger">Delete User</a>
             </li>
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-danger">Delete Bank Account</a>
+                <a href="Manager/DeleteBankAccount" class="w-25 btn btn-lg btn-danger">Delete Bank Account</a>
+            </li>
+        }
+
+        @if(User.IsInRole("User"))
+        {
+            <li class="mb-3">
+                <a href="User/SelectBankAccount" class="w-25 btn btn-lg btn-primary">Select Bank Account</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Change Password</a>
             </li>
         }
 

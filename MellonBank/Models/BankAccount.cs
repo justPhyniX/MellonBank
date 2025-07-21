@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MellonBank.Models
 {
@@ -7,17 +6,17 @@ namespace MellonBank.Models
     {
         public int Id { get; set; }
 
-        public string UserAFM { get; set; }
+        public string UserAFM { get; set; } = null!;
 
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal BalanceEuro { get; set; }
 
-        public string AccountNumber { get; set; }
+        public string AccountNumber { get; set; } = null!;
 
-        public string Branch { get; set; }
+        public string Branch { get; set; } = null!;
 
-        public string AccountType { get; set; }
+        public string AccountType { get; set; } = null!;
     }
 }

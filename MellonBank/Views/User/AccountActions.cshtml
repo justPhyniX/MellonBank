@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Account Actions";
+}
+
+@if (User.IsInRole("User"))
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <ul class="list-unstyled">
+            
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Check Balance</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Add Money To My Account</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Send Money</a>
+            </li>
+            <li class="mb-3">
+                <a href="" class="w-25 btn btn-lg btn-primary">Bank Account Details</a>
+            </li>
+        </ul>
+    </div>
+}

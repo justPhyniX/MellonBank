@@ -21,19 +21,32 @@ namespace MellonBank.Repositories
         {
             var newUser = UserMapper.MapUserViewModelToUser(user);
             await _userManager.CreateAsync(newUser, user.Password);
-            await _userManager.AddToRoleAsync(newUser, "Manager");
+            await _userManager.AddToRoleAsync(newUser, "User");
         }
 
-        public async Task AddBankAccount(BankAccountViewModel bankAccount)
+        public async Task<bool> AddBankAccount(BankAccountViewModel bankAccount)
         {
-            var newBankAccount = BankAccountMapper.MapBankAccountViewModelToBankAccount(bankAccount);
-            await _db.BankAccounts.AddAsync(newBankAccount);
+            var accountOwner = await _db.Users.FirstOrDefaultAsync(x => x.AFM == bankAccount.UserAFM);
+            if(accountOwner != null)
+            {
+                var newBankAccount = BankAccountMapper.MapBankAccountViewModelToBankAccount(bankAccount);
+                accountOwner.BankAccounts.Add(newBankAccount);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> DeleteBankAccount(string accountNumber)
+        {
+            var account = await _db.BankAccounts.FirstOrDefaultAsync(x => x.AccountNumber == accountNumber);
+            if(account == null)
+                return false;
+
+            _db.BankAccounts.Remove(account);
             await _db.SaveChangesAsync();
-        }
-
-        public Task<bool> DeleteBankAccount(string accountNumber)
-        {
-            throw new NotImplementedException();
+            return true;
         }
 
         public async Task<bool> DeleteUser(string AFM)
@@ -42,7 +55,7 @@ namespace MellonBank.Repositories
             if (user == null)
                 return false;
 
-            var accounts = _db.BankAccounts.Where(x => x.UserAFM == AFM);
+            var accounts = _db.BankAccounts.Where(x => x.UserAFM == AFM);       //also deletes user's accounts 
             _db.BankAccounts.RemoveRange(accounts);
 
             await _userManager.DeleteAsync(user);
@@ -50,9 +63,22 @@ namespace MellonBank.Repositories
             return true;
         }
 
-        public Task<bool> EditBankAccount(string accountNumber)
+        public async Task<bool> EditBankAccount(BankAccountViewModel newAccount, string accountNumber)
         {
-            throw new NotImplementedException();
+            var account = await _db.BankAccounts.FirstOrDefaultAsync(x => x.AccountNumber == accountNumber);
+            if(account == null)
+                return false;
+            else
+            {
+                account.BalanceEuro = newAccount.BalanceEuro;
+                account.AccountNumber = newAccount.AccountNumber;
+                account.Branch = newAccount.Branch;
+                account.AccountType = newAccount.AccountType;
+                _db.BankAccounts.Update(account);
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
         }
 
         public async Task<bool> EditUser(UserViewModel newUser, string searchAFM)
@@ -80,7 +106,16 @@ namespace MellonBank.Repositories
 
         public async Task<List<User>> ListUsers()
         {
-            return await _db.Users.ToListAsync();
+            var users = await _db.Users.ToListAsync();
+            var usersInRole = new List<User>();
+
+            foreach (var user in users)
+            {
+                if(await _userManager.IsInRoleAsync(user, "User"))
+                    usersInRole.Add(user);
+            }
+
+            return usersInRole;
         }
 
         public async Task<User> ViewUser(string AFM)
