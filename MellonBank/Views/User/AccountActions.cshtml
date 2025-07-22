@@ -14,17 +14,32 @@
                    asp-action="CheckBalance"
                    asp-route-accountNumber="@selectedAccountNumber"
                    class="w-25 btn btn-lg btn-primary">
-                    Check Balance
+                   Check Balance
                 </a>
             </li>
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-primary">Add Money To My Account</a>
+                <a asp-controller="User"
+                   asp-action="AddMoneyToMyAccount"
+                   asp-route-accountNumber="@selectedAccountNumber"
+                   class="w-25 btn btn-lg btn-primary">
+                   Add Money To My Account
+                </a>
             </li>
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-primary">Send Money</a>
+                <a asp-controller="User"
+                   asp-action="SendMoney"
+                   asp-route-accountNumber="@selectedAccountNumber"
+                   class="w-25 btn btn-lg btn-primary">
+                   Send Money
+                </a>
             </li>
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-primary">Bank Account Details</a>
+                <a asp-controller="User"
+                   asp-action="BankAccountDetails"
+                   asp-route-accountNumber="@selectedAccountNumber"
+                   class="w-25 btn btn-lg btn-primary">
+                   Bank Account Details
+                </a>
             </li>
         </ul>
     </div>

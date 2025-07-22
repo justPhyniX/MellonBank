@@ -52,5 +52,52 @@ namespace MellonBank.Controllers
             var balances = await _userRepository.CheckBalance(accountNumber);
             return View(balances);
         }
+
+        //ADD MONEY TO MY ACCOUNT
+        [HttpGet]
+        public IActionResult AddMoneyToMyAccount(string accountNumber)
+        {
+            return View(model: accountNumber);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMoneyToMyAccount(string accountNumber, decimal amount)
+        {
+            await _userRepository.AddMoneyToMyBankAccount(accountNumber, amount);
+            return RedirectToAction("CheckBalance", new { accountNumber });
+        }
+
+        //Send Money
+        [HttpGet]
+        public IActionResult SendMoney(string accountNumber)
+        {
+            return View(model: accountNumber);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMoney(string accountNumber, decimal amount, string accountNumberReceiver)
+        {
+            string? errorMessage = await _userRepository.SendMoney(accountNumber, amount, accountNumberReceiver);
+
+            if (errorMessage == null)
+                ViewBag.MoneySentSuccessfully = $"{amount}€ were successfully sent to account: {accountNumberReceiver}";
+            else if (errorMessage == "Receiver Not Found")
+                ViewBag.ReceiverNotFound = errorMessage;
+            else if (errorMessage == "Ιnsufficient Βalance")
+                ViewBag.InsufficientBalance = errorMessage;
+            else
+                ViewBag.SomethingWentWrong = errorMessage;
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BankAccountDetails(string accountNumber)
+        {
+            var account = await _userRepository.BankAccountDetails(accountNumber);
+            var balances = await _userRepository.CheckBalance(accountNumber);
+            ViewBag.BalanceUSD = balances[1];
+            return View(account);
+        }
     }
 }

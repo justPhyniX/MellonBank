@@ -8,5 +8,6 @@ namespace MellonBank.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
         public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
     }
 }

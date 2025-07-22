@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MellonBank.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250719112105_Initial")]
+    [Migration("20250722132135_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace MellonBank.Data.Migrations
 
             modelBuilder.Entity("MellonBank.Models.BankAccount", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
@@ -60,6 +58,29 @@ namespace MellonBank.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("MellonBank.Models.Currency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AUD")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CHF")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("GBP")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("USD")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("MellonBank.Models.User", b =>

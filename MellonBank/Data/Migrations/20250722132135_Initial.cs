@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -42,8 +43,7 @@ namespace MellonBank.Data.Migrations
                 name: "BankAccounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserAFM = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BalanceEuro = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -61,6 +61,21 @@ namespace MellonBank.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AUD = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CHF = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GBP = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    USD = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_UserId",
                 table: "BankAccounts",
@@ -72,6 +87,9 @@ namespace MellonBank.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BankAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
 
             migrationBuilder.DropColumn(
                 name: "AFM",

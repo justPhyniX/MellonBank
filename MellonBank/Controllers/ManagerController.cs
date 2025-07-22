@@ -118,7 +118,7 @@ namespace MellonBank.Controllers
         public async Task<IActionResult> DeleteUser(string AFM)
         {
             if (AFM == null)
-                return RedirectToAction("DeleteUser");
+                return View();
 
             var result = await _managerRepository.DeleteUser(AFM);
             if(result)
@@ -134,8 +134,6 @@ namespace MellonBank.Controllers
         [HttpGet]
         public IActionResult EditUser()
         {
-            if (TempData["NotFoundAFM"] != null)
-                ViewBag.NotFoundAFM = TempData["NotFoundAFM"];
             return View();
         }
 
@@ -149,7 +147,7 @@ namespace MellonBank.Controllers
                 return RedirectToAction("ViewUser", new { afm = userToEdit.AFM });
             else
             {
-                TempData["NotFoundAFM"] = searchAFM;
+                ViewBag.NotFoundAFM = searchAFM;
                 return RedirectToAction("EditUser");
             }
         }

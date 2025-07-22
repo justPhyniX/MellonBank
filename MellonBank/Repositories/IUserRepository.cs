@@ -8,9 +8,8 @@ namespace MellonBank.Repositories
         Task<List<BankAccount>> ListBankAccounts(string ownerUserName);
         Task<bool> AccountBelongsToUser(string accountNumber, string loggedInUserName);
         Task<List<decimal>> CheckBalance(string accountNumber);
-        //Task AddMoneyToMyBankAccount(decimal amount);
-        //Task<string?> SendMoney(decimal amount, string accountNumberToSend);
-        //Task<BankAccount> BankAccountDetails();
-        //Task ChangePassword(string oldPassword, string newPassword);
+        Task AddMoneyToMyBankAccount(string accountNumber, decimal amount);
+        Task<string?> SendMoney(string accountNumberSender, decimal amount, string accountNumberReceiver);
+        Task<BankAccount> BankAccountDetails(string accountNumber);
     }
 }

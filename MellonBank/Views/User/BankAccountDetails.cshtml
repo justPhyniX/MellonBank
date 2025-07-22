@@ -17,11 +17,20 @@
             @Html.DisplayFor(model => model.UserAFM)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BalanceEuro)
+            Balance (EUR)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BalanceEuro)
+            @Model.BalanceEuro.ToString("N2")
         </dd>
+        @if(ViewBag.BalanceUSD != null)
+        {
+            <dt class="col-sm-2">
+                Balance (USD)
+            </dt>
+            <dd class="col-sm-10">
+                @ViewBag.BalanceUSD.ToString("N2")
+            </dd>
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AccountNumber)
         </dt>

@@ -9,11 +9,9 @@ namespace MellonBank.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _db;
-        private readonly UserManager<User> _userManager;
-        public UserRepository(ApplicationDbContext db, UserManager<User> userManager)
+        public UserRepository(ApplicationDbContext db)
         {
             _db = db;
-            _userManager = userManager;
         }
 
         public async Task<string?> UserNameToUserAFM(string userName)
@@ -73,6 +71,42 @@ namespace MellonBank.Repositories
             }
 
             return balances;
+        }
+
+        public async Task AddMoneyToMyBankAccount(string accountNumber, decimal amount)
+        {
+            var account = await _db.BankAccounts
+                .FirstOrDefaultAsync(x => x.AccountNumber == accountNumber);
+            account.BalanceEuro += amount;
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<string?> SendMoney(string accountNumberSender, decimal amount, string accountNumberReceiver)
+        {
+            var accountSender = await _db.BankAccounts
+                .FirstOrDefaultAsync(x => x.AccountNumber == accountNumberSender);
+            var accountReceiver = await _db.BankAccounts
+                .FirstOrDefaultAsync(x => x.AccountNumber == accountNumberReceiver);
+
+            if (accountReceiver != null && accountSender.BalanceEuro >= amount)
+            {
+                accountSender.BalanceEuro -= amount;
+                accountReceiver.BalanceEuro += amount;
+                await _db.SaveChangesAsync();
+                return null;
+            }
+            else if (accountReceiver == null)
+                return "Receiver Not Found";
+            else if (accountSender.BalanceEuro < amount)
+                return "Ιnsufficient Βalance";
+            else
+                return "Something Went Wrong";
+        }
+
+        public async Task<BankAccount> BankAccountDetails(string accountNumber)
+        {
+            return await _db.BankAccounts
+                .FirstOrDefaultAsync(x => x.AccountNumber == accountNumber);
         }
     }
 }

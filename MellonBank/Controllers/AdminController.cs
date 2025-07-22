@@ -38,5 +38,19 @@ namespace MellonBank.Controllers
                 return NotFound();
             return View(user);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListManagers()
+        {
+            var managers = await _adminRepository.ListManagers();
+            return View(managers);
+        }
+
+        //DELETE BANK ACCOUNT
+        [HttpGet]
+        public IActionResult DeleteBankAccount()
+        {
+            return View();
+        }
     }
 }

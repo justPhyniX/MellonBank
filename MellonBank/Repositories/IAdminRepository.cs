@@ -7,5 +7,6 @@ namespace MellonBank.Repositories
     {
         Task AddManager(UserViewModel user);
         Task<User> GetManagerByUserNameAsync(string userName);
+        Task<List<User>> ListManagers();
     }
 }

@@ -24,6 +24,7 @@ namespace MellonBank
             builder.Services.AddScoped<IAdminRepository, AdminRepository>();
             builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<CurrencyRepository, CurrencyRepository>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
@@ -94,6 +95,18 @@ namespace MellonBank
 
                     await userManager.CreateAsync(admin, password);
                     await userManager.AddToRoleAsync(admin, "Admin");
+                }
+
+                if (!context.Currencies.Any())
+                {
+                    var currency = new Currency();
+                    currency.AUD = 1.79m;
+                    currency.CHF = 0.93m;
+                    currency.GBP = 0.87m;
+                    currency.USD = 1.17m;
+
+                    context.Currencies.AddRange(currency);
+                    await context.SaveChangesAsync();
                 }
             }
 

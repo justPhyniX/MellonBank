@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model string
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h1>Send Money</h1>
+        <form asp-action="SendMoney" method="post">
+            <input type="hidden" name="accountNumber" value="@Model" />
+            <div class="form-group">
+                <label for="amount" class="control-label">Amount</label>
+                <input name="amount" class="form-control" autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <label for="accountNumberReceiver" class="control-label">Receiver Account Number</label>
+                <input name="accountNumberReceiver" class="form-control" autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary my-2 w-100" />
+            </div>
+        </form>
+
+        @if (ViewBag.MoneySentSuccessfully != null)
+        {
+            <div class="alert alert-success mt-3">@ViewBag.MoneySentSuccessfully</div>
+        }
+
+        @if (ViewBag.ReceiverNotFound != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.ReceiverNotFound</div>
+        }
+
+        @if (ViewBag.InsufficientBalance != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.InsufficientBalance</div>
+        }
+
+        @if (ViewBag.SomethingWentWrong != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.SomethingWentWrong</div>
+        }
+    </div>
+</div>

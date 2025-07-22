@@ -4,7 +4,7 @@ namespace MellonBank.Models
 {
     public class BankAccount
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string UserAFM { get; set; } = null!;
 
