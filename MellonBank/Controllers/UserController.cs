@@ -32,6 +32,7 @@ namespace MellonBank.Controllers
             if (!isAuthorized)
                 return Unauthorized();
 
+            HttpContext.Session.SetString("SelectedAccountNumber", accountNumber);
             return RedirectToAction("AccountActions");
         }
 
@@ -39,7 +40,17 @@ namespace MellonBank.Controllers
         [HttpGet]
         public IActionResult AccountActions()
         {
+            var selectedAccountNumber = HttpContext.Session.GetString("SelectedAccountNumber");
+            ViewData["SelectedAccountNumber"] = selectedAccountNumber;
             return View();
+        }
+
+        //CHECK BALANCE
+        [HttpGet]
+        public async Task<IActionResult> CheckBalance(string accountNumber)
+        {
+            var balances = await _userRepository.CheckBalance(accountNumber);
+            return View(balances);
         }
     }
 }

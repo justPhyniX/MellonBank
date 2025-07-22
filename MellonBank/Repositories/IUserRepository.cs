@@ -7,7 +7,7 @@ namespace MellonBank.Repositories
         Task<string?> UserNameToUserAFM(string userName);
         Task<List<BankAccount>> ListBankAccounts(string ownerUserName);
         Task<bool> AccountBelongsToUser(string accountNumber, string loggedInUserName);
-        //Task<List<decimal>> CheckBalance();
+        Task<List<decimal>> CheckBalance(string accountNumber);
         //Task AddMoneyToMyBankAccount(decimal amount);
         //Task<string?> SendMoney(decimal amount, string accountNumberToSend);
         //Task<BankAccount> BankAccountDetails();

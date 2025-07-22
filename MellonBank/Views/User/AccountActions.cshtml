@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Account Actions";
+﻿@model List<decimal>
+@{
+    var selectedAccountNumber = ViewData["SelectedAccountNumber"] as string;
 }
 
 @if (User.IsInRole("User"))
@@ -7,9 +8,14 @@
     <div class="text-center">
         <h1 class="display-4">Welcome</h1>
         <ul class="list-unstyled">
-            
+
             <li class="mb-3">
-                <a href="" class="w-25 btn btn-lg btn-primary">Check Balance</a>
+                <a asp-controller="User"
+                   asp-action="CheckBalance"
+                   asp-route-accountNumber="@selectedAccountNumber"
+                   class="w-25 btn btn-lg btn-primary">
+                    Check Balance
+                </a>
             </li>
             <li class="mb-3">
                 <a href="" class="w-25 btn btn-lg btn-primary">Add Money To My Account</a>
